@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang='fr'>
+<head>
+  <meta charset='ANSI'>
+  <title>fiche d'inscription</title>
+  <script language="javascript" src="js/pdfmake.min.js"></script>
+  <script language="javascript" src="js/vfs_fonts.js"></script>
+  <script language="javascript" src="js/constantes.js"></script>
+  <script language="javascript" src="valeurs_entree_test.js"></script>
+</head>
+<body>
+
+
+<img id="profil" src="img/profil-pauline.jpg" style="visibility:hidden">
+<img id="true" src="img/true.jpg" style="visibility:hidden">
+<img id="false" src="img/false.jpg" style="visibility:hidden">
+<img id="imgheader" src="img/logo-header.jpg" style="visibility:hidden">
+
+<script>
+// playground requires you to assign document definition to a variable called dd
+function tel(ind,tel){
+  var retrun=[];
+  var j=0;
+  for (var i =ind;i<tel.length;i=i+2){
+    retrun[j]="tel."+(i+1)+": "+tel[i];
+    j++;
+  }
+  return retrun;
+}
+function getDataUri(id) {
+  var image = document.getElementById(id);
+
+  var canvas = document.createElement('canvas');
+  canvas.width = image.naturalWidth; // or 'width' if you want a special/scaled size
+  canvas.height = image.naturalHeight; // or 'height' if you want a special/scaled size
+
+  canvas.getContext('2d').drawImage(image, 0, 0);
+var truc=canvas.toDataURL('image/'+image.src.split(".")[1]);
+	//alert(truc);
+return truc;
+
+}
+function santeTXT(){
+  if(allergies.length==0 && maladies.length==0 && observation=="")
+  return "il n'y a aucune information pertinente sur ma santé à partager avec l'association";
+  else
+  return "";
+}
+function santeIMG() {
+  if(allergies.length==0 && maladies.length==0 && observation=="")
+  return {
+    image: "true",
+    fit:[15,15]};
+    else
+    return "";
+  }
+  function ficheSante() {
+    var retrun=[];
+    var chaine;
+    var i=0;
+    if (allergies.length>0) {
+      chaine="Allergie";
+      if (allergies.length>1) chaine+="s";
+      chaine+=":";
+      retrun[i]=[ { columns: [ { width: "20%", text:" " }, { width: "15%", text: chaine }, { ul:allergies } ] } ];
+      i++;
+      retrun[i]=" ";
+      i++;
+    }
+    if (maladies.length>0) {
+      chaine="Maladie";
+      if (maladies.length>1) chaine+="s";
+      chaine+=":";
+      retrun[i]=[{columns:[ { width: "20%", text:" " }, { width: "15%", text: chaine }, { ul:maladies } ] } ];
+      i++;
+      retrun[i]=" ";
+      i++;
+    }
+    if(observation!=""){
+      retrun[i]=[{columns:[ { width: "20%", text:" " }, { width: "15%", text: "Observation: " }, { text: observation } ] } ];
+      i++;
+      retrun[i]=" ";
+    }
+    return retrun;
+
+
+  }
+  function today() {
+    var date=new Date();
+    var jour=date.getDate();
+    var mois=date.getMonth()+1;
+    var annee=date.getFullYear();
+    retrun=""
+    if (jour<10) {
+      retrun+="0";
+    }
+    retrun+=jour+"/";
+    if (mois<10) {
+      retrun+="0";
+    }
+    retrun+=mois+"/"+annee;
+    return retrun;
+  }
+  function tuteur() {
+    //var date=new Date().getTime();
+    var tabNaissance=dateNaissance.split("/");
+    var naissance=new Date(tabNaissance[2],parseInt(tabNaissance[1])-1,tabNaissance[0]);
+    var majeur=new Date();
+    //alert(majeur);
+    majeur.setFullYear(majeur.getFullYear()-18);
+    //alert(naissance);
+    //alert(majeur);
+    if (naissance.getTime()<majeur.getTime()){
+      return "";
+    }else{return "Signature du responsable légal: ";}
+
+  }
+  function urgence() {
+    var retrun=[];
+    if (uPrenoms.length!=0) {
+      retrun[0]={text: "Personnes à contacter en cas d'urgence:", style:{bold: true}}
+      //retrun[i]=[{columns:[ { width: "20%", text:" " }, { width: "15%", text: "Observation: " }, { text: observation } ] } ];
+      var ull=[];
+
+      for (var i = 0; i < uPrenoms.length; i++) {
+        var colonne=[];
+        colonne[0]={ width: "20%", text:"Nom: "+uNoms[i]};
+        colonne[1]={ width: "20%", text:"Prénom: "+uPrenoms[i]};
+        colonne[2]={ width: "*", stack:tel(0,uTelephones[i])};
+        colonne[3]={ width: "*", stack:tel(1,uTelephones[i])};
+
+        ull[i]={columns: colonne};
+      }
+      retrun[1]={ul : ull };
+      retrun[2]=" "
+
+    }
+
+    return retrun;
+  }
+
+
+
+
+/* CREA PDF  EXECUTION*/
+
+  tuteur();
+  if (uPrenoms.length!=uNoms.length || uPrenoms.length!=uTelephones.length) alert("erreur urgence");
+
+  var docDefinition={
+    content: [
+      /*{ text: "Les Arpenteurs d'agartha", style: 'header' },*/
+      {
+		  image: "imgheader",
+		  fit:[300,300],
+		  style: {alignment:"center"}
+	  },
+	
+      {text:"Fiche d'adhésion à l'association", style: {alignment:"center"}},
+      " ",
+      { columns: [
+        {
+          width: '65%',
+          stack: [
+            'Nom: '+nom,
+            'Prénom: '+prenom,
+            "Pseudo: "+pseudo,
+            " ",
+            "Adresse: "+adresse,
+            { columns: [
+              {
+                width: '35%',
+                stack: [
+                  'Code Postal: '+codePostal,
+                  " "
+
+                ].concat(tel(0,telephones))
+              },
+              {
+                width: '*',
+                stack: [
+                  'Ville: '+ville,
+                  " "
+
+                ].concat(tel(1,telephones))
+              },
+            ],
+          },
+          " ",
+          "Mèl: "+mel
+        ]
+      },
+      {
+        width: '*',
+        stack: [
+          'date de naissance: '+dateNaissance,
+          " ",
+          {
+            image: "profil",
+            width: 100
+          }
+        ]
+      },
+    ],
+    // optional space between columns
+    columnGap: 10},
+    " ",
+    {columns:[
+      {
+        width:"20%",
+        stack:[{
+          image: secouriste,
+          fit:[15,15]
+        },
+        {
+          image: droitImage,
+          fit:[15,15]
+        },santeIMG()],
+        style: {alignment:"right"},
+
+      },
+      {
+        width:"*",
+        stack:[
+          "je possède un brevet de secouriste",
+          "j'accepte que mon image soit utilisée, en photo ou vidéo, par l'association",
+          santeTXT()
+        ]
+
+      }
+    ],
+    columnGap: 0
+  },
+  " "].concat(ficheSante()).concat(urgence()).concat([
+    {text:"Je joins à ma fiche d'adhésion le montant de la cotisation qui s'élève à "+COTISATION[0]+"€ ("+COTISATION[1]+" euros).",style: {alignment:"center"}},
+    " ",
+    {columns:[
+      {
+        width:"30%",
+        stack:["Fait le: "+today(),
+        " ",
+        "Signature:"
+      ],style: {alignment:"right"}
+    },
+    "À: "+lieu,
+    {
+      stack:[" ",
+      " ",
+      tuteur()
+    ]}
+
+
+
+  ],
+  columnGap:20
+}
+]),
+
+styles: {
+  header: { fontSize: 22, bold: true, alignment: "center" }
+},
+images:{
+  profil: getDataUri("profil"),
+  imgheader: getDataUri("imgheader"),
+  true: getDataUri("true"),
+  false: getDataUri("false")
+}
+};
+dd=docDefinition;
+
+pdfMake.createPdf(docDefinition).open();
+	
+/* FIN CREA PDF  EXECUTION*/
+
+</script>
+</body>
