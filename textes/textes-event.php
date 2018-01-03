@@ -54,5 +54,15 @@ $events = array(
         ),
 	);
 
+//renvoi les event dans le desordre et retire l'élément donné si défini
+function randomEvent($toIgnore=NULL) {
+	global $events;
+	$copy = $events;
+	if(!is_null($toIgnore)){
+		unset($copy[$toIgnore]);
+	}
+	shuffle($copy);
+	return $copy;
+}
 
 ?>

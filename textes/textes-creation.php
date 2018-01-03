@@ -144,5 +144,15 @@ $creations = array(
         ),
 	);
 
+	//renvoi les event dans le desordre et retire l'élément donné si défini
+function randomCrea($toIgnore=NULL) {
+	global $creations;
+	$copy = $creations;
+	if(!is_null($toIgnore)){
+		unset($copy[$toIgnore]);
+	}
+	shuffle($copy);
+	return $copy;
+}
 
 ?>

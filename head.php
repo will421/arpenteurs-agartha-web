@@ -21,8 +21,6 @@
 		include("textes/textes-creation.php");
 		include("textes/textes-event.php");
 		include("textes/textes-contact.php");
-	  	$presta = $_GET["presta"];
-	  	$crea = $_GET["crea"];
 	?>
 
     <title><?php echo($titreH1);?></title>

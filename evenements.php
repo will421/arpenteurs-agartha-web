@@ -1,6 +1,9 @@
 <?php require("navbar.php")?>
 <?php $pageActive = "evenements"; ?>
 
+<?php 
+$eventList = randomEvent();
+?>
 
 	<!-- *****************************************************************************************************************
 	 BLUE WRAP
@@ -36,7 +39,7 @@
             
             
              <?php
-			foreach ($events as $element)
+			foreach ($eventList as $element)
 				{
 			 ?>
 				<div class="portfolio-item graphic-design">

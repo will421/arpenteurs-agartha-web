@@ -1,7 +1,10 @@
 <?php $pageActive = "creations"; ?>
 <?php require("navbar.php");?>
 
-
+<?php 
+$currentCrea = $creations[$_GET["crea"]];
+$creaList = randomCrea($_GET["crea"]);
+?>
 	<!-- *****************************************************************************************************************
 	 BLUE WRAP
 	 ***************************************************************************************************************** -->
@@ -9,7 +12,7 @@
 	    <div class="container">
 			<div class="row">
 				<h3>
-				<?php echo($creations[$crea]["titre"]);?></h3>
+				<?php echo($currentCrea["titre"]);?></h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -33,9 +36,9 @@
 				  <div class="<!--carousel-inner-->">
 				    <div class="item active">	<!--ne mettre active que à la première diapo-->
 				      <img src="
-				      <?php echo($creations[$crea]["images"]["01"]);?>
+				      <?php echo($currentCrea["images"]["01"]);?>
 		 			" alt="
-		 			<?php echo($creations[$crea]["alt"]);?>">
+		 			<?php echo($currentCrea["alt"]);?>">
 				    </div>
 				    </div>
 				  </div>
@@ -45,9 +48,9 @@
 		 	<div class="col-lg-5 col-lg-offset-1">
 			 	<div class="spacing"></div>
 		 		<h4>
-		 			<?php echo($creations[$crea]["sous-titre"]);?></h4>
+		 			<?php echo($currentCrea["sous-titre"]);?></h4>
 		 		<p>
-		 			<?php echo($creations[$crea]["texte"]);?></p>
+		 			<?php echo($currentCrea["texte"]);?></p>
 		 	</div>
 		 	
 		 	<div class="col-lg-4 col-lg-offset-1">
@@ -55,7 +58,7 @@
 		 		<h4>Détails</h4>
 		 		<div class="hline"></div>
 		 		<p>
-		 			<?php echo($creations[$crea]["description"]);?>
+		 			<?php echo($currentCrea["description"]);?>
 		 		</p>
 		 	</div>
 		 	
@@ -73,7 +76,7 @@
             
 			<?php
 			$compteur = 0;
-			foreach ($creations as $element)
+			foreach ($creaList as $element)
 				{
 			 ?>
 				<div class="portfolio-item graphic-design">

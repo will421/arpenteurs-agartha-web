@@ -1,6 +1,9 @@
 <?php $pageActive = "creations"; ?>
 <?php require("navbar.php");?>
 
+<?php 
+$creaList = randomCrea();
+?>
 
 	<!-- *****************************************************************************************************************
 	 BLUE WRAP
@@ -35,7 +38,7 @@
             <div class="recentitems portfolio">
             
 			<?php
-			foreach ($creations as $element)
+			foreach ($creaList as $element)
 				{
 			 ?>
 				<div class="portfolio-item graphic-design">

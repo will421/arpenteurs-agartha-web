@@ -1,6 +1,10 @@
 <?php $pageActive = "evenements"; ?>
 <?php require("navbar.php");?>
 
+<?php 
+$currentEvent= $events[$_GET["presta"]];
+$eventList = randomEvent($_GET["presta"]);
+?>
 
 	<!-- *****************************************************************************************************************
 	 BLUE WRAP
@@ -9,7 +13,7 @@
 	    <div class="container">
 			<div class="row">
 				<h3>
-				<?php echo($events[$presta]["titre"]);?></h3>
+				<?php echo($currentEvent["titre"]);?></h3>
 			</div><!-- /row -->
 	    </div> <!-- /container -->
 	</div><!-- /blue -->
@@ -33,7 +37,7 @@
 				  <div class="<!--carousel-inner-->">
 				    <div class="item active">
 				      <img src="
-					<?php echo($events[$presta]["images"]["01"]);?>
+					<?php echo($currentEvent["images"]["01"]);?>
 			    	" alt="">
 				    </div>
 				    <div class="item">
@@ -49,16 +53,16 @@
 		 	<div class="col-lg-10 col-lg-offset-1">
 			 	<div class="spacing"></div>
 		 		<h3>
-				<?php echo($events[$presta]["titre"]);?>
+				<?php echo($currentEvent["titre"]);?>
 				</h3>
 		 		<h4>
-				<?php echo($events[$presta]["sous-titre"]);?>
+				<?php echo($currentEvent["sous-titre"]);?>
 				</h4>
 		 		<p><b>
-					<?php echo($events[$presta]["date"]);?> - <?php echo($events[$presta]["lieu"]);?></b>
+					<?php echo($currentEvent["date"]);?> - <?php echo($currentEvent["lieu"]);?></b>
 				</p>
 		 		<p>
-				<?php echo($events[$presta]["texte"]);?></p>
+				<?php echo($currentEvent["texte"]);?></p>
 		 	</div>
 		 	
 	 	</div><! --/row -->
@@ -74,7 +78,7 @@
 			
 			<?php
 			$compteur = 0;
-			foreach ($events as $element)
+			foreach ($eventList as $element)
 				{
 			 ?>
 				<div class="portfolio-item graphic-design">
